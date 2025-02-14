@@ -1,10 +1,10 @@
-# Use an official Node.js image for building the frontend
+# Multi-stage build: create a new build from the latest LTS Node version as a named stage --> "builder"
 FROM node:18 AS builder
 
 # Set working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json before installing dependencies
+# Copy and define app dependencies first
 COPY package.json package-lock.json ./
 
 # Install dependencies
@@ -16,13 +16,13 @@ COPY . .
 # Build the frontend
 RUN npm run build
 
-# Use an Nginx image to serve the built frontend
+# Use an Nginx image to serve the built frontend (ChatGPT's recommendation...)
 FROM nginx:1.23 AS production
 
 # Copy built files from the builder stage to Nginx's serving directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Expose port 80 for serving the frontend
+# Set port 80 as the port this container will listen on
 EXPOSE 80
 
 # Start Nginx

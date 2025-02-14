@@ -1,18 +1,25 @@
 # Use the latest version of Docker Compose
 version: '3.8'
 
+# Start the same as backend yml
 services:
-  student-api:
-    build: .
+  backend:
+    build: ./backend
     ports:
       - "8080:8080"
-      - "0.0.0.0:8080:8080"
-    
-    # Don't start until MongoDB is ready
     depends_on:
       - mongo
     environment:
       - MONGO_URI=mongodb://mongo:27017/studentDB
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    # Don't start until backend is ready
+    depends_on:
+      - backend
     restart: unless-stopped
 
   mongo:

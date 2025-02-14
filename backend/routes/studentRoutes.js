@@ -8,12 +8,12 @@ router.post('/student', async (req, res) => {
   try {
     const { studentID, studentName, course } = req.body;
 
-    // Validate input
+    //Validate input; no blank fields
     if (!studentID || !studentName || !course) {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    // Check for duplicate studentID
+    //No duplicate students; studentID must be unique
     const existingStudent = await Student.findOne({ studentID });
     if (existingStudent) {
       return res.status(409).json({ message: 'Student with this ID already exists.' });
@@ -27,7 +27,7 @@ router.post('/student', async (req, res) => {
   }
 });
 
-//READ all students
+//GET all students
 router.get('/students', async (req, res) => {
   try {
     const students = await Student.find();
@@ -37,7 +37,7 @@ router.get('/students', async (req, res) => {
   }
 });
 
-//READ one student by ID
+//GET student by ID (ID is _id, not studentID)
 router.get('/student/:id', async (req, res) => {
   try {
     const student = await Student.findById(req.params.id);
@@ -48,7 +48,7 @@ router.get('/student/:id', async (req, res) => {
   }
 });
 
-//UPDATE a student by ID
+//UPDATE student by ID
 router.put('/student/:id', async (req, res) => {
   try {
     const { studentName, course } = req.body;
@@ -70,7 +70,7 @@ router.put('/student/:id', async (req, res) => {
   }
 });
 
-//DELETE a student by ID
+//DELETE student by ID
 router.delete('/student/:id', async (req, res) => {
   try {
     const deletedStudent = await Student.findByIdAndDelete(req.params.id);
