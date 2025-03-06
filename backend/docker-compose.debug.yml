@@ -2,11 +2,11 @@
 version: '3.8'
 
 services:
-  student-api:
+  student-api1:
     build: .
     ports:
       - "8080:8080"
-      - "0.0.0.0:8080:8080"
+      # - "0.0.0.0:8080:8080"
     
     # Don't start until MongoDB is ready
     depends_on:
