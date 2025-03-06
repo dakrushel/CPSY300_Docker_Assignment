@@ -1,5 +1,5 @@
 # Use the latest version of Docker Compose
-version: '3.8'
+# version: '3.8'
 
 services:
   student-api1:
